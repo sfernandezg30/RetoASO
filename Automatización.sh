@@ -1,17 +1,17 @@
 # Crear la VPC
-vpc_id=$(aws ec2 create-vpc --cidr-block 10.3.0.0/16 --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value=mensagl-2024}]' --output json | jq -r '.Vpc.VpcId')
+vpc_id=$(aws ec2 create-vpc --cidr-block 10.3.0.0/16 --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value=RetoASO}]' --output json | jq -r '.Vpc.VpcId')
  
 # Crear la tabla de enrutamiento para la subred pública
 public_route_table_id=$(aws ec2 create-route-table --vpc-id $vpc_id --tag-specifications 'ResourceType=route-table,Tags=[{Key=Name,Value=tabla-de-enrutamiento-publica}]' --output json | jq -r '.RouteTable.RouteTableId')
  
 # Crear la subred pública1
-subnet_public1_id=$(aws ec2 create-subnet --vpc-id $vpc_id --cidr-block 10.3.10.0/24 --availability-zone us-east-1a --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=publica1}]' --output json | jq -r '.Subnet.SubnetId')
+subnet_public1_id=$(aws ec2 create-subnet --vpc-id $vpc_id --cidr-block 10.100.20.0/24 --availability-zone us-east-1a --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=publica1}]' --output json | jq -r '.Subnet.SubnetId')
  
 # Asociarla con la tabla de enrutamiento
 aws ec2 associate-route-table --subnet-id $subnet_public1_id --route-table-id $public_route_table_id
  
 # Crear la subred pública2
-subnet_public2_id=$(aws ec2 create-subnet --vpc-id $vpc_id --cidr-block 10.3.20.0/24 --availability-zone us-east-1b --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=publica2}]' --output json | jq -r '.Subnet.SubnetId')
+subnet_public2_id=$(aws ec2 create-subnet --vpc-id $vpc_id --cidr-block 10.100.30.0/24 --availability-zone us-east-1b --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=publica2}]' --output json | jq -r '.Subnet.SubnetId')
  
 # Asociarla con la tabla de enrutamiento
 aws ec2 associate-route-table --subnet-id $subnet_public2_id --route-table-id $public_route_table_id
@@ -29,13 +29,13 @@ aws ec2 create-route --route-table-id $public_route_table_id --destination-cidr-
 private_route_table_id=$(aws ec2 create-route-table --vpc-id $vpc_id --tag-specifications 'ResourceType=route-table,Tags=[{Key=Name,Value=tabla-de-enrutamiento-privada}]' --output json | jq -r '.RouteTable.RouteTableId')
  
 # Crear la subred privada1
-subnet_private1_id=$(aws ec2 create-subnet --vpc-id $vpc_id --cidr-block 10.3.11.0/24 --availability-zone us-east-1a --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=privada1}]' --output json | jq -r '.Subnet.SubnetId')
+subnet_private1_id=$(aws ec2 create-subnet --vpc-id $vpc_id --cidr-block 10.100.21.0/24 --availability-zone us-east-1a --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=privada1}]' --output json | jq -r '.Subnet.SubnetId')
  
 # Asociarla con la tabla de enrutamiento
 aws ec2 associate-route-table --subnet-id $subnet_private1_id --route-table-id $private_route_table_id
  
 # Crear la subred privada2
-subnet_private2_id=$(aws ec2 create-subnet --vpc-id $vpc_id --cidr-block 10.3.21.0/24 --availability-zone us-east-1b --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=privada2}]' --output json | jq -r '.Subnet.SubnetId')
+subnet_private2_id=$(aws ec2 create-subnet --vpc-id $vpc_id --cidr-block 10.100.31.0/24 --availability-zone us-east-1b --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=privada2}]' --output json | jq -r '.Subnet.SubnetId')
  
 # Asociarla con la tabla de enrutamiento
 aws ec2 associate-route-table --subnet-id $subnet_private2_id --route-table-id $private_route_table_id
