@@ -9,7 +9,16 @@ sudo apt install apache2 -y
 
 # Instalar MySQL y configurar una contraseña para el usuario root de MySQL
 sudo apt install mysql-server -y
-sudo mysql_secure_installation
+sudo mysql_secure_installation <<EOF
+
+y
+password
+password
+y
+y
+y
+y
+EOF
 
 # Instalar PHP y módulos requeridos
 sudo apt install php libapache2-mod-php php-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip -y
@@ -26,10 +35,10 @@ sudo chown -R www-data:www-data /var/www/html/wordpress
 sudo chmod -R 755 /var/www/html/wordpress
 
 # Crear la base de datos de WordPress
-sudo mysql -u root -p -e "CREATE DATABASE wordpress;"
-sudo mysql -u root -p -e "CREATE USER 'wordpress'@'%' IDENTIFIED BY '1234';"
-sudo mysql -u root -p -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'%';"
-sudo mysql -u root -p -e "FLUSH PRIVILEGES;"
+sudo mysql -u root -ppassword -e "CREATE DATABASE wordpress;"
+sudo mysql -u root -ppassword -e "CREATE USER 'wordpress'@'%' IDENTIFIED BY '1234';"
+sudo mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'%';"
+sudo mysql -u root -ppassword -e "FLUSH PRIVILEGES;"
 
 # Copiar el archivo de configuración de WordPress
 sudo cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
@@ -42,5 +51,4 @@ sudo sed -i 's/password_here/1234/' /var/www/html/wordpress/wp-config.php
 # Limpiar archivos temporales
 rm latest.zip
 
-echo "Instalación completada. Accede a tu sitio WordPress en http://tu-direccion-ip/wordpress"
-
+echo "Instalación completada. Accede a tu sitio WordPress en http://<Public-IP>/wordpress"
